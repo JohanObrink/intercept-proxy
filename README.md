@@ -10,7 +10,7 @@ A lite-weight proxy for exposing a remote site through localhost and replace sel
 By pointing the proxy server at a url and running the app, you can surf the targeted site through localhost:
 
     var proxy = require('intercept-proxy');
-    proxy.createServer('google.com');
+    proxy.createServer('knowyourmeme.com');
     proxy.listen(1337);
 
 ##Intercepting with locals
