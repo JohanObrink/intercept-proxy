@@ -33,20 +33,28 @@ describe('handleLocal', function() {
     beforeEach(function(done) {
       
       dirPath = path.resolve('./local/test/');
-      fs.mkdir(dirPath, function(err) {
+
+      fs.mkdir(path.resolve('./local'), function(err) {
         if(err)
           throw err;
 
-        filePath = path.resolve(dirPath + '/search.aspx');
-        fs.writeFile(filePath, data, function(err) {
+        fs.mkdir(dirPath, function(err) {
           if(err)
             throw err;
 
-          done();
+          filePath = path.resolve(dirPath + '/search.aspx');
+          fs.writeFile(filePath, data, function(err) {
+            if(err)
+              throw err;
+
+            done();
+
+          });
 
         });
 
       });
+      
     
     });
 
@@ -54,7 +62,9 @@ describe('handleLocal', function() {
       
       fs.unlink(filePath, function() {
         fs.rmdir(dirPath, function() {
-          done();
+          fs.rmdir(path.resolve('./local'), function() {
+            done();
+          });
         });
       });
     
