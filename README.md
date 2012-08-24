@@ -1,5 +1,5 @@
 #Intercept Proxy
-A light weight proxy for exposing a remote site through localhost and replace select resources with local versions for testing and development purposes.
+A lite-weight proxy for exposing a remote site through localhost and replace select resources with local versions for testing and development purposes.
 
 ##Usage
 By pointing the proxy server at a url and running the app, you can surf the targeted site through localhost:
