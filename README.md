@@ -1,4 +1,5 @@
-#Intercept Proxy
+#Intercept Proxy [![Build Status](https://secure.travis-ci.org/JohanObrink/intercept-proxy.png?branch=master)](http://travis-ci.org/JohanObrink/intercept-proxy)
+-
 A lite-weight proxy for exposing a remote site through localhost and replace select resources with local versions for testing and development purposes.
 
 ##Install
