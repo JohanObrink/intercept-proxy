@@ -34,12 +34,13 @@ describe('handleLocal', function() {
       
       dirPath = path.resolve('./local/test/');
       fs.mkdir(dirPath, function(err) {
-        console.log(require('util').inspect(err));
         if(err)
           throw err;
 
         filePath = path.resolve(dirPath + '/search.aspx');
-        fs.writeFile(filePath, data, function() {
+        fs.writeFile(filePath, data, function(err) {
+          if(err)
+            throw err;
 
           done();
 
@@ -153,7 +154,9 @@ describe('handleLocal', function() {
         beforeEach(function(done) {
           
           headersFilePath = path.resolve(dirPath + '/headers.json');
-          fs.writeFile(headersFilePath, JSON.stringify(headers), function() {
+          fs.writeFile(headersFilePath, JSON.stringify(headers), function(err) {
+            if(err)
+              throw err;
             done();
           });
         
