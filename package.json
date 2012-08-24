@@ -1,16 +1,18 @@
 {
-  "name": "proxy",
-  "version": "0.0.1",
-  "private": true,
+  "name": "intercept-proxy",
+  "version": "0.1.0",
+  "authors": [
+    "Johan Öbrink <johan.obrink@gmail.com> (https://github.com/johanobrink)"
+  ],
   "dependencies": {
-    "underscore": "~1.3.3"
+    "underscore": ">=1.3.3"
   },
   "devDependencies": {
-    "mocha": "1.4.0",
-    "chai": "1.2.0"
+    "mocha": ">=1.4.0",
+    "chai": ">=1.2.0"
   },
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "test": "mocha -R spec ./tests/*.js"
   }
 }
