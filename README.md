@@ -16,6 +16,8 @@ By pointing the proxy server at a url and running the app, you can surf the targ
 ##Intercepting with locals
 By adding files to /local/[path], those files will replace the onse from the original site.
 
+    /js/main.js can be replaced by creating /local/js/main.js
+
 ##Intercepting with handlers (planned)
 I plan to make intercepting available through custom handlers. The idea is that you register a handler and a pattern for which requests it should handle.
 

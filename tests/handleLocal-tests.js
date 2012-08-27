@@ -21,6 +21,14 @@ describe('handleLocal', function() {
       expect(handleLocal.resolve(req)).to.equal(root + '/foo/bar/baz.aspx');
     
     });
+
+    it('should resolve path correctly with query params', function() {
+      
+      var root = path.resolve('./local');
+      var req = { url: '/foo/bar/baz.aspx?plupp=derp' };
+      expect(handleLocal.resolve(req)).to.equal(root + '/foo/bar/baz.aspx');
+    
+    });
   
   });
 
