@@ -17,15 +17,31 @@ describe('handleLocal', function() {
     it('should resolve the path correctly', function() {
       
       var root = path.resolve('./local');
-      var req = { url: '/foo/bar/baz.aspx' };
+      var req = { url: '/foo/bar/baz.aspx', method: 'GET' };
       expect(handleLocal.resolve(req)).to.equal(root + '/foo/bar/baz.aspx');
     
     });
 
-    it('should resolve path correctly with query params', function() {
+    it('should include query params in path by default', function() {
       
       var root = path.resolve('./local');
-      var req = { url: '/foo/bar/baz.aspx?plupp=derp' };
+      var req = { url: '/foo/bar/baz.aspx?plupp=derp', method: 'GET' };
+      expect(handleLocal.resolve(req)).to.equal(root + '/foo/bar/baz.aspx?plupp=derp');
+    
+    });
+
+    it('should remove query params in path by option', function() {
+      
+      var root = path.resolve('./local');
+      var req = { url: '/foo/bar/baz.aspx?plupp=derp', method: 'GET' };
+      expect(handleLocal.resolve(req, { supressQuery: false })).to.equal(root + '/foo/bar/baz.aspx');
+    
+    });
+
+    it('should resolve path correctly with hash', function() {
+      
+      var root = path.resolve('./local');
+      var req = { url: '/foo/bar/baz.aspx#plupp=derp', method: 'GET' };
       expect(handleLocal.resolve(req)).to.equal(root + '/foo/bar/baz.aspx');
     
     });
@@ -137,14 +153,28 @@ describe('handleLocal', function() {
               if(arguments.length)
                 this.data += arguments[0];
 
-              this._onEnd();
+              this._onEnd && this._onEnd();
             }
           };
+      });
+
+      it('should return false if method is POST', function() {
+        
+        var req = { url: '/test/search.aspx', method: 'POST' };
+        expect(handleLocal.pipe(req)).to.equal.false;
+      
+      });
+
+      it('should return true if method is POST and options.methods includes POST', function() {
+        
+        var req = { url: '/test/search.aspx', method: 'POST' };
+        expect(handleLocal.pipe(req, res, { methods: 'GET|POST|PUT' })).to.equal.false;
+      
       });
       
       it('should pipe content to response', function(done) {
         
-        var req = { url: '/test/search.aspx' };
+        var req = { url: '/test/search.aspx', method: 'GET' };
         res.onEnd(function() {
           expect(res.status).to.equal(200);
           expect(res.data).to.equal(data);
@@ -190,7 +220,7 @@ describe('handleLocal', function() {
 
         it('should write headers.json into headers', function(done) {
           
-          var req = { url: '/test/search.aspx' };
+          var req = { url: '/test/search.aspx', method: 'GET' };
           res.onEnd(function() {
             expect(res.status).to.equal(200);
             expect(res.data).to.equal(data);

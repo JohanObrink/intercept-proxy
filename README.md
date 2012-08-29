@@ -13,8 +13,16 @@ By pointing the proxy server at a url and running the app, you can surf the targ
     proxy.createServer('knowyourmeme.com');
     proxy.listen(1337);
 
+or with more options:
+
+    proxy.createServer({
+      host: 'knowyourmeme.com',
+      methods: 'GET|POST',           // will intercept GET and POST but not PUT and DELETE
+      supressQuery: true             // remove query parameters from url when looking for local file
+    });
+
 ##Intercepting with locals
-By adding files to /local/[path], those files will replace the onse from the original site.
+By adding files to /local/[path], those files will replace the ones from the original site. Only GET requests will be intercepted by default.
 
     /js/main.js can be replaced by creating /local/js/main.js
 
