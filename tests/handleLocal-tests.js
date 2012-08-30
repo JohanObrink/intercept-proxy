@@ -34,7 +34,15 @@ describe('handleLocal', function() {
       
       var root = path.resolve('./local');
       var req = { url: '/foo/bar/baz.aspx?plupp=derp', method: 'GET' };
-      expect(handleLocal.resolve(req, { supressQuery: false })).to.equal(root + '/foo/bar/baz.aspx');
+      expect(handleLocal.resolve(req, { supressQuery: false })).to.equal(root + '/foo/bar/baz.aspx?plupp=derp');
+    
+    });
+
+    it('should keep query params in path by option', function() {
+      
+      var root = path.resolve('./local');
+      var req = { url: '/foo/bar/baz.aspx?plupp=derp', method: 'GET' };
+      expect(handleLocal.resolve(req, { supressQuery: true })).to.equal(root + '/foo/bar/baz.aspx');
     
     });
 
