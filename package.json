@@ -1,7 +1,7 @@
 {
   "name": "intercept-proxy",
   "description": "A light weight proxy for exposing a remote site through localhost and replace select resources with local versions for testing and development purposes.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "authors": [
     "Johan Öbrink <johan.obrink@gmail.com> (https://github.com/johanobrink)"
   ],
@@ -24,7 +24,7 @@
     "wrench": ">=1.3.9"
   },
   "bin": {
-    "intercept-proxy": "./bin/intercept-proxy"
+    "iproxy": "./bin/intercept-proxy"
   },
   "scripts": {
     "prepublish": "npm prune",
