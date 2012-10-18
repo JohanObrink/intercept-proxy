@@ -1,7 +1,7 @@
 {
   "name": "intercept-proxy",
   "description": "A light weight proxy for exposing a remote site through localhost and replace select resources with local versions for testing and development purposes.",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "authors": [
     "Johan Öbrink <johan.obrink@gmail.com> (https://github.com/johanobrink)"
   ],
@@ -20,7 +20,9 @@
     "mocha": ">=1.4.0",
     "chai": ">=1.2.0"
   },
+  "bin": { "intercept-proxy": "./bin/intercept-proxy" },
   "scripts": {
+    "prepublish" : "npm prune",
     "start": "node app.js",
     "test": "mocha -R spec ./tests/*.js"
   }

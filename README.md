@@ -6,12 +6,28 @@ A lite-weight proxy for exposing a remote site through localhost and replace sel
 
     npm install intercept-proxy
 
+##CLI
+To use command line, you must first install package with
+
+    npm install -g intercept-proxy
+
+This is just done once. Then you can call:
+
+    intercept-proxy myremote -r myremotesite.com -p 3000
+    cd myremote
+    npm install
+    npm start
+
+...and the site will runat http://localhost:3000 and point to myremotesite.com
+
 ##Usage
 By pointing the proxy server at a url and running the app, you can surf the targeted site through localhost:
 
     var proxy = require('intercept-proxy');
-    proxy.createServer('knowyourmeme.com');
-    proxy.listen(1337);
+    var server = proxy.createServer('knowyourmeme.com');
+    server.listen(1337, function() {
+      console.log('Proxy: ' + server.remote + ' listening on http://localhost:' + server.port);
+    });
 
 or with more options:
 
@@ -26,7 +42,8 @@ By adding files to /local/[path], those files will replace the ones from the ori
 
     /js/main.js can be replaced by creating /local/js/main.js
 
-##Intercepting with handlers (planned)
+##Planned
+###Intercepting with handlers
 I plan to make intercepting available through custom handlers. The idea is that you register a handler and a pattern for which requests it should handle.
 
     proxy.registerHandler({ url: '/foo/bar', method: 'POST', payload: '<xml />' }, function(req, res) { res.end('foo'); });
