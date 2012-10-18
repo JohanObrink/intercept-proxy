@@ -26,7 +26,7 @@ By pointing the proxy server at a url and running the app, you can surf the targ
     var proxy = require('intercept-proxy');
     var server = proxy.createServer('knowyourmeme.com');
     server.listen(1337, function() {
-      console.log('Proxy: ' + server.remote + ' listening on http://localhost:' + server.port);
+      console.log('Proxy: ' + server.host + ' listening on http://localhost:' + server.port);
     });
 
 or with more options:
