@@ -16,8 +16,8 @@ var exec = require('child_process').exec
 
 program
   .version(version)
-  .option('-r, --remote', 'set remote url')
-  .option('-p, --port', 'set port')
+  .option('-r, --remote <path>', 'set remote url')
+  .option('-p, --port <port>', 'set port', parseInt)
   .option('-f, --force', 'force on non-empty directory')
   .parse(process.argv);
 
@@ -35,7 +35,7 @@ program.remote = program.remote || 'knowyourmeme.com';
 
 // Port
 
-program.port = program.port || 1337;
+program.port = program.port || 3000;
 
 /**
  * App template.
@@ -52,7 +52,7 @@ var app = [
   , '/**'
   , ' * Proxy server.'
   , ' */'
-  , 'var server = proxy.createServer(\'' + program.remote + '\');'
+  , 'var server = proxy.createServer(\'' + program.host + '\');'
   , 'server.listen(' + program.port + ', function() {'
   , '	console.log(\'Proxy: \' + server.remote + \' listening on http://localhost:\' + server.port);'
   , '});'
