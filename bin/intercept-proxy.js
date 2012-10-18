@@ -16,7 +16,7 @@ var exec = require('child_process').exec
 
 program
   .version(version)
-  .option('-r, --remote <path>', 'set remote url')
+  .option('-h, --host <host>', 'set remote url')
   .option('-p, --port <port>', 'set port', parseInt)
   .option('-f, --force', 'force on non-empty directory')
   .parse(process.argv);
@@ -31,7 +31,7 @@ var eol = 'win32' == os.platform() ? '\r\n' : '\n'
 
 // Remote site
 
-program.remote = program.remote || 'knowyourmeme.com';
+program.host = program.host || 'knowyourmeme.com';
 
 // Port
 
@@ -54,7 +54,7 @@ var app = [
   , ' */'
   , 'var server = proxy.createServer(\'' + program.host + '\');'
   , 'server.listen(' + program.port + ', function() {'
-  , '	console.log(\'Proxy: \' + server.remote + \' listening on http://localhost:\' + server.port);'
+  , '	console.log(\'Proxy: \' + server.host + \' listening on http://localhost:\' + server.port);'
   , '});'
 ].join(eol);
 

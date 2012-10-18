@@ -13,7 +13,7 @@ To use command line, you must first install package with
 
 This is just done once. Then you can call:
 
-    intercept-proxy myremote -r myremotesite.com -p 3000
+    intercept-proxy myremote -h myremotesite.com -p 3000
     cd myremote
     npm install
     npm start
