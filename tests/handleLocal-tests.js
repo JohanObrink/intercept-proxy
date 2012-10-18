@@ -1,6 +1,19 @@
 var expect = require('chai').expect;
 var fs = require('fs');
 var path = require('path');
+var wrench = require('wrench');
+var os = require('os');
+var exec = require('child_process').exec;
+
+// On windows, unlink does not work as expected - using exec on DOS del instead
+var deleteFile = function(path, callback) {
+  ('win32' == os.platform())
+    ? exec('del ' + path, callback)
+    : fs.unlink(path, callback);
+}
+
+// existsSync moved from path to fs in v. 8
+var existsSync = fs.existsSync || path.existsSync;
 
 describe('handleLocal', function() {
 
@@ -15,42 +28,32 @@ describe('handleLocal', function() {
   describe('#resolve', function() {
     
     it('should resolve the path correctly', function() {
-      
-      var root = path.resolve('./local');
       var req = { url: '/foo/bar/baz.aspx', method: 'GET' };
-      expect(handleLocal.resolve(req)).to.equal(root + '/foo/bar/baz.aspx');
+      expect(handleLocal.resolve(req)).to.equal(path.resolve('./local/foo/bar/baz.aspx'));
     
     });
 
     it('should include query params in path by default', function() {
-      
-      var root = path.resolve('./local');
       var req = { url: '/foo/bar/baz.aspx?plupp=derp', method: 'GET' };
-      expect(handleLocal.resolve(req)).to.equal(root + '/foo/bar/baz.aspx?plupp=derp');
+      expect(handleLocal.resolve(req)).to.equal(path.resolve('./local/foo/bar/baz.aspx?plupp=derp'));
     
     });
 
     it('should remove query params in path by option', function() {
-      
-      var root = path.resolve('./local');
       var req = { url: '/foo/bar/baz.aspx?plupp=derp', method: 'GET' };
-      expect(handleLocal.resolve(req, { supressQuery: false })).to.equal(root + '/foo/bar/baz.aspx?plupp=derp');
+      expect(handleLocal.resolve(req, { supressQuery: false })).to.equal(path.resolve('./local/foo/bar/baz.aspx?plupp=derp'));
     
     });
 
     it('should keep query params in path by option', function() {
-      
-      var root = path.resolve('./local');
       var req = { url: '/foo/bar/baz.aspx?plupp=derp', method: 'GET' };
-      expect(handleLocal.resolve(req, { supressQuery: true })).to.equal(root + '/foo/bar/baz.aspx');
+      expect(handleLocal.resolve(req, { supressQuery: true })).to.equal(path.resolve('./local/foo/bar/baz.aspx'));
     
     });
 
     it('should resolve path correctly with hash', function() {
-      
-      var root = path.resolve('./local');
       var req = { url: '/foo/bar/baz.aspx#plupp=derp', method: 'GET' };
-      expect(handleLocal.resolve(req)).to.equal(root + '/foo/bar/baz.aspx');
+      expect(handleLocal.resolve(req)).to.equal(path.resolve('./local/foo/bar/baz.aspx'));
     
     });
   
@@ -58,46 +61,23 @@ describe('handleLocal', function() {
 
   describe('local file', function() {
 
-    var dirPath, filePath;
+    var localPath, testPath, filePath;
 
     var data = '<html><head><title>Hej</title></head><body><h1>Hello</h1><p>World!</p></body></html>';
     
-    beforeEach(function(done) {
-      
-      dirPath = path.resolve('./local/test/');
+    beforeEach(function() {
+      localPath = path.resolve('./local/');
+      testPath = path.resolve('./local/test/');
+      filePath = path.resolve(testPath + '/search.aspx');
 
-      fs.mkdir(path.resolve('./local'), function(err) {
-        if(err)
-          throw err;
-
-        fs.mkdir(dirPath, function(err) {
-          if(err)
-            throw err;
-
-          filePath = path.resolve(dirPath + '/search.aspx');
-          fs.writeFile(filePath, data, function(err) {
-            if(err)
-              throw err;
-
-            done();
-
-          });
-
-        });
-
-      });
-      
-    
+      wrench.mkdirSyncRecursive(testPath, 0777);
+      fs.writeFileSync(filePath, data);
     });
 
     afterEach(function(done) {
-      
-      fs.unlink(filePath, function() {
-        fs.rmdir(dirPath, function() {
-          fs.rmdir(path.resolve('./local'), function() {
-            done();
-          });
-        });
+      deleteFile(filePath, function() {
+        wrench.rmdirSyncRecursive(localPath, true);
+        done();
       });
     
     });
@@ -186,14 +166,30 @@ describe('handleLocal', function() {
         res.onEnd(function() {
           expect(res.status).to.equal(200);
           expect(res.data).to.equal(data);
-          expect(res.headers).to.not.exist;
+          expect(res.headers).to.eql({ "Content-Type": "text/html; charset=utf-8" });
           done();
         });
 
         handleLocal.pipe(req, res);
       });
 
-      describe('content.json', function() {
+      describe('headers by extension', function() {
+        it('should set correct headers by extension', function(done) {
+        
+          var req = { url: '/test/search.aspx', method: 'GET' };
+          res.onEnd(function() {
+            expect(res.status).to.equal(200);
+            expect(res.data).to.equal(data);
+            expect(res.headers).to.eql({ "Content-Type": "text/html; charset=utf-8" });
+
+            done();
+          });
+
+          handleLocal.pipe(req, res);
+        });
+      });
+
+      describe('headers.json', function() {
 
         var headersFilePath;
         var headers = {
@@ -209,7 +205,7 @@ describe('handleLocal', function() {
 
         beforeEach(function(done) {
           
-          headersFilePath = path.resolve(dirPath + '/headers.json');
+          headersFilePath = path.resolve(testPath + '/headers.json');
           fs.writeFile(headersFilePath, JSON.stringify(headers), function(err) {
             if(err)
               throw err;
@@ -220,7 +216,7 @@ describe('handleLocal', function() {
 
         afterEach(function(done) {
           
-          fs.unlink(headersFilePath, function() {
+          deleteFile(headersFilePath, function() {
             done();
           });
         

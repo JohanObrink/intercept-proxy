@@ -81,36 +81,7 @@ describe('headers', function() {
         done();
       };
 
-      headers.getHeaders({ url: '/pages/search.aspx' });
-    
-    });
-    
-    it('should detect the correct extension with queryString', function(done) {
-      
-      headers.getHeadersByExtension = function(ext) {
-        expect(ext).to.equal('.aspx');
-        done();
-      };
-
-      headers.getHeaders({ url: '/pages/search.aspx?foo=bar' });
-    
-    });
-    
-    it('should detect the correct extension with hash', function(done) {
-      
-      headers.getHeadersByExtension = function(ext) {
-        expect(ext).to.equal('.aspx');
-        done();
-      };
-
-      headers.getHeaders({ url: '/pages/search.aspx#foo=bar' });
-    
-    });
-    
-    it('should return the correct headers', function() {
-
-      var result = headers.getHeaders({ url: '/pages/search.aspx#foo=bar' });
-      expect(result).to.eql(htmlHeaders);
+      headers.getHeaders('/pages/search.aspx');
     
     });
   
