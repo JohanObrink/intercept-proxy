@@ -42,6 +42,9 @@ By adding files to /local/[path], those files will replace the ones from the ori
 
     /js/main.js can be replaced by creating /local/js/main.js
 
+###Controlling headers for local intercepts
+intercept-proxy adds headers by default for common resource extensions such as css, js, html, aspx, php. If you need to control the headers, add a file called headers.json in the folder under local. All properties in the json object will be added as headers. If a default header is specified in headers.json, this will be overridden.
+
 ##Intercepting with handlers
 Calls can also be intercepted using handlers. A handler can be registered with just path or path and verbs
 
