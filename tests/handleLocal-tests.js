@@ -149,14 +149,14 @@ describe('handleLocal', function() {
       it('should return false if method is POST', function() {
         
         var req = { url: '/test/search.aspx', method: 'POST' };
-        expect(handleLocal.pipe(req)).to.equal.false;
+        expect(handleLocal.pipe(req)).to.be.false;
       
       });
 
       it('should return true if method is POST and options.methods includes POST', function() {
         
         var req = { url: '/test/search.aspx', method: 'POST' };
-        expect(handleLocal.pipe(req, res, { methods: 'GET|POST|PUT' })).to.equal.false;
+        expect(handleLocal.pipe(req, res, { methods: 'GET,POST,PUT' })).to.be.true;
       
       });
       
