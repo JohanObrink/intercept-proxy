@@ -1,7 +1,7 @@
 {
   "name": "intercept-proxy",
   "description": "A light weight proxy for exposing a remote site through localhost and replace select resources with local versions for testing and development purposes.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "authors": [
     "Johan Öbrink <johan.obrink@gmail.com> (https://github.com/johanobrink)"
   ],
