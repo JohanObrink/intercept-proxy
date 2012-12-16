@@ -33,7 +33,7 @@ or with more options:
 
     proxy.createServer({
       host: 'knowyourmeme.com',
-      methods: 'GET|POST',           // will intercept GET and POST but not PUT and DELETE
+      methods: 'GET,POST',           // will intercept GET and POST but not PUT and DELETE
       supressQuery: true             // remove query parameters from url when looking for local file
     });
 
@@ -42,11 +42,27 @@ By adding files to /local/[path], those files will replace the ones from the ori
 
     /js/main.js can be replaced by creating /local/js/main.js
 
-##Planned
-###Intercepting with handlers
-I plan to make intercepting available through custom handlers. The idea is that you register a handler and a pattern for which requests it should handle.
+###Controlling headers for local intercepts
+intercept-proxy adds headers by default for common resource extensions such as css, js, html, aspx, php. If you need to control the headers, add a file called headers.json in the folder under local. All properties in the json object will be added as headers. If a default header is specified in headers.json, this will be overridden.
 
-    proxy.registerHandler({ url: '/foo/bar', method: 'POST', payload: '<xml />' }, function(req, res) { res.end('foo'); });
+##Intercepting with handlers
+Calls can also be intercepted using handlers. A handler can be registered with just path or path and verbs
+
+    // register handler which responds to all calls to /foo/bar
+    proxy.addHandler('/foo/bar', function(req, res) {
+      res.end('foo');
+    });
+
+    //register handler which responds to POSTs and PUTs to /foo/bar
+    proxy.addHandler('/foo/bar', 'POST,PUT', function(req, res) {
+      res.end('foo');
+    });
+
+    //remove handler for all verbs in requests for /foo/bar
+    proxy.removeHandler('/foo/bar');
+
+    //remove handler for GET and DELETE in requests for /foo/bar
+    proxy.removeHandler('/foo/bar', 'GET,DELETE');
 
 ##Why?
 Beacuse I needed it for a project :)
