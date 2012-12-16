@@ -49,20 +49,20 @@ intercept-proxy adds headers by default for common resource extensions such as c
 Calls can also be intercepted using handlers. A handler can be registered with just path or path and verbs
 
     // register handler which responds to all calls to /foo/bar
-    proxy.addHandler('/foo/bar', function(req, res) {
+    server.addHandler('/foo/bar', function(req, res) {
       res.end('foo');
     });
 
     //register handler which responds to POSTs and PUTs to /foo/bar
-    proxy.addHandler('/foo/bar', 'POST,PUT', function(req, res) {
+    server.addHandler('/foo/bar', 'POST,PUT', function(req, res) {
       res.end('foo');
     });
 
     //remove handler for all verbs in requests for /foo/bar
-    proxy.removeHandler('/foo/bar');
+    server.removeHandler('/foo/bar');
 
     //remove handler for GET and DELETE in requests for /foo/bar
-    proxy.removeHandler('/foo/bar', 'GET,DELETE');
+    server.removeHandler('/foo/bar', 'GET,DELETE');
 
 ##Why?
 Beacuse I needed it for a project :)
