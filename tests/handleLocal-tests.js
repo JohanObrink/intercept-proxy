@@ -1,7 +1,6 @@
 var expect = require('chai').expect;
 var fs = require('fs');
 var path = require('path');
-var wrench = require('wrench');
 var os = require('os');
 var exec = require('child_process').exec;
 
@@ -70,13 +69,16 @@ describe('handleLocal', function() {
       testPath = path.resolve('./local/test/');
       filePath = path.resolve(testPath + '/search.aspx');
 
-      wrench.mkdirSyncRecursive(testPath, 0777);
+      fs.mkdirSync(localPath, 0777);
+      fs.mkdirSync(testPath, 0777);
       fs.writeFileSync(filePath, data);
+
     });
 
     afterEach(function(done) {
       deleteFile(filePath, function() {
-        wrench.rmdirSyncRecursive(localPath, true);
+        fs.rmdirSync(testPath, true);
+        fs.rmdirSync(localPath, true);
         done();
       });
     
