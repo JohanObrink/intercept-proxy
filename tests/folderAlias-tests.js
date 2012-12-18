@@ -1,6 +1,7 @@
 
 var expect = require('chai').expect,
-	proxy = require('../lib/proxy');
+	proxy = require('../lib/proxy'),
+	path = require('path');
 
 describe('folder alias', function() {
 
@@ -15,10 +16,12 @@ describe('folder alias', function() {
 			server.addFolder('/images', '../../intercept-proxy');
 			expect(server.folders).to.have.length(1);
 		});
+
+		it('computes correct physical folder');
 	});
 
 	describe('#removeFolder', function() {
-		it('removes only added folder', function() {
+		it('removes folder', function() {
 			server.addFolder('/images', '../../intercept-proxy');
 			expect(server.folders).to.have.length(1);
 
