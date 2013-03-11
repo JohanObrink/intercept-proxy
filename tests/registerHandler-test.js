@@ -89,7 +89,7 @@ describe('handlers', function() {
     describe('calls to handlers', function() {
       it('should call a handler for matching path', function(done) {
 
-        var request = new http.IncomingMessage();
+        var request = new http.IncomingMessage({});
         request.url = '/foo';
         request.method = 'GET';
 
@@ -103,7 +103,7 @@ describe('handlers', function() {
 
       it('should call a handler for matching path+verb', function(done) {
 
-        var request = new http.IncomingMessage();
+        var request = new http.IncomingMessage({});
         request.url = '/foo';
         request.method = 'POST';
 
@@ -117,7 +117,7 @@ describe('handlers', function() {
 
       it('should not call handler for non matching verb', function(done) {
 
-        var request = new http.IncomingMessage();
+        var request = new http.IncomingMessage({});
         request.url = '/foo';
         request.method = 'PATCH';
 
