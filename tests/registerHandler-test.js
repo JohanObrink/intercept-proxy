@@ -86,6 +86,21 @@ describe('handlers', function() {
       expect(server.handlers['/foo']['PUT']).to.equal(handler);
     });
 
+    it('should remove all handlers', function() {
+      var handler = function(req, res) {};
+
+      server.addHandler('/foo', 'GET', handler);
+      server.addHandler('/foo2', 'GET', handler);
+
+      expect(server.handlers['/foo']['GET']).to.equal(handler);
+      expect(server.handlers['/foo2']['GET']).to.equal(handler);
+
+      server.removeHandlers();
+
+      expect(server.handlers['/foo']).to.be.undefined;
+      expect(server.handlers['/foo2']).to.be.undefined;
+    });
+
     describe('calls to handlers', function() {
       it('should call a handler for matching path', function(done) {
 
